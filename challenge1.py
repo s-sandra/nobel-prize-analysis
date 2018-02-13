@@ -19,3 +19,6 @@ for laureate in nobel_data["laureates"]:
 
     rows.append({"gender" : gender, "year" : year})
 gender_and_year = pd.DataFrame(rows)
+
+gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")]
+print(gender_and_year)
