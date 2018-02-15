@@ -1,12 +1,13 @@
 import json
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 # loads nobel prize data into nobel_data object
 with open("nobel.json","r") as data:
     nobel_data = json.load(data)
 
-# format data into array for analysis.
+# formats data into DataFrames for analysis.
 
 
 #%%-----
@@ -39,20 +40,26 @@ genders_shares.boxplot('shares', by='gender', showmeans=True)
 
 
 #%%-----
-# creates dataframe storing gender and year of award
+# creates DataFrame storing gender and year of award for each recipient.
 rows = []
 for laureate in nobel_data["laureates"]:
-
-    # each laureate is a dictionary
     gender = laureate["gender"]
 
     # checks for bogus entries
     if laureate["born"] != "0000-00-00" and laureate["died"] != "0000-00-00":
-        year = laureate["prizes"][0]["year"]
-        # each prizes in laureate is a list containing a dictionary
 
-    rows.append({"gender" : gender, "year" : year})
+        # gets years of all prizes recipient has won
+        for prize in laureate["prizes"]:
+            year = prize["year"]
+            rows.append({"gender" : gender, "year" : year})
+
 gender_and_year = pd.DataFrame(rows)
-
-gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")]
-print(gender_and_year)
+gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")] # considers only male and female genders
+gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year)
+gender_frequency = gender_and_year.gender.value_counts()
+gender_frequency.plot(kind="bar")
+plt.title("Gender of Nobel Prize Recipients")
+plt.xlabel("Gender")
+plt.ylabel("Frequency")
+plt.show()
+plt.close()
