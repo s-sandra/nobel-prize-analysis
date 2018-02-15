@@ -37,7 +37,11 @@ genders_shares.boxplot('shares', by='gender', showmeans=True)
 
 #%%-----
 #question4
-
+countries = []
+for laureate in laureates:
+    if(not(laureate['born'] == '0000-00-00' and laureate['died'] == '0000-00-00') and (laureate['gender'] == 'male' or laureate['gender'] == 'female')):
+        for prize in laureate['prizes']:
+            affiliations = prize['affiliations'][0]
 
 #%%-----
 # creates DataFrame storing gender and year of award for each recipient.
