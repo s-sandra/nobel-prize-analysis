@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import matplotlib.pyplot as plt
 
 # loads nobel prize data into nobel_data object
 with open("nobel.json","r") as data:
@@ -38,4 +39,4 @@ for laureate in nobel_data["laureates"]:
 
 gender_and_year = pd.DataFrame(rows)
 gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")] # considers only male and female genders
-print(gender_and_year)
+gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year)
