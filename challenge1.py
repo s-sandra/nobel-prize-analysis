@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
@@ -20,9 +21,24 @@ for laureate in laureates:
         for x in range(len(laureate['prizes'])):
             genders.append(laureate['gender'])
         for prize in laureate['prizes']:
-            shares.append(laureate['prizes'])
-#shares = laureates[:]['prizes'][:]['share']
-print(genders)
+            shares.append(prize['share'])
+
+shares = np.asarray(shares)
+print(shares)
+
+#shares = np.where(shares=='1', False, True)
+#print(shares)
+genders_shares = pd.DataFrame([genders, list(shares)],index=['gender','shares']).swapaxes(0,1)
+print(genders_shares)
+
+genders_shares = genders_shares.apply(pd.to_numeric, errors='ignore')
+print(genders_shares)
+
+genders_shares.boxplot('shares', by='gender', showmeans=True)
+
+#%%-----
+#question4
+
 
 #%%-----
 # creates DataFrame storing gender and year of award for each recipient.
@@ -40,7 +56,7 @@ for laureate in nobel_data["laureates"]:
 
 gender_and_year = pd.DataFrame(rows)
 gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")] # considers only male and female genders
-gender_and_year_frequency = pd.crosstab(gender_and_year.year, gender_and_year.gender)
+gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year)
 gender_frequency = gender_and_year.gender.value_counts()
 gender_frequency.plot(kind="bar")
 plt.title("Gender of Nobel Prize Recipients")
