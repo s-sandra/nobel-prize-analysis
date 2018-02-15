@@ -40,3 +40,10 @@ for laureate in nobel_data["laureates"]:
 gender_and_year = pd.DataFrame(rows)
 gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")] # considers only male and female genders
 gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year)
+gender_frequency = gender_and_year.gender.value_counts()
+gender_frequency.plot(kind="bar")
+plt.title("Gender of Nobel Prize Recipients")
+plt.xlabel("Gender")
+plt.ylabel("Frequency")
+plt.show()
+plt.close()
