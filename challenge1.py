@@ -1,5 +1,6 @@
 import json
 import pandas as pd
+import numpy as np
 
 # loads nobel prize data into nobel_data object
 with open("nobel.json","r") as data:
@@ -18,9 +19,24 @@ for laureate in laureates:
         for x in range(len(laureate['prizes'])):
             genders.append(laureate['gender'])
         for prize in laureate['prizes']:
-            shares.append(laureate['prizes'])
-#shares = laureates[:]['prizes'][:]['share']
-print(genders)
+            shares.append(prize['share'])
+
+shares = np.asarray(shares)
+print(shares)
+
+#shares = np.where(shares=='1', False, True)
+#print(shares)
+genders_shares = pd.DataFrame([genders, list(shares)],index=['gender','shares']).swapaxes(0,1)
+print(genders_shares)
+
+genders_shares = genders_shares.apply(pd.to_numeric, errors='ignore')
+print(genders_shares)
+
+genders_shares.boxplot('shares', by='gender', showmeans=True)
+
+#%%-----
+#question4
+
 
 #%%-----
 # creates dataframe storing gender and year of award
