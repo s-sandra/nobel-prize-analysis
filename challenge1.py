@@ -52,7 +52,7 @@ for laureate in nobel_data["laureates"]:
     gender = laureate["gender"]
 
     # checks for bogus entries
-    if laureate["born"] != "0000-00-00" and laureate["died"] != "0000-00-00":
+    if laureate["born"] != "0000-00-00":
 
         # gets years and category of all prizes recipient has won
         for prize in laureate["prizes"]:
@@ -73,7 +73,8 @@ gender_and_year = pd.DataFrame(rows)
 gender_and_year = gender_and_year[["gender","year"]]
 
 gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")] # considers only male and female genders
-gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year)
+gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year,margins=True)
+print(gender_and_year_frequency)
 gender_frequency = gender_and_year.gender.value_counts()
 gender_frequency.plot(kind="bar")
 plt.title("Gender of Nobel Prize Recipients")
