@@ -38,10 +38,22 @@ genders_shares.boxplot('shares', by='gender', showmeans=True)
 #%%-----
 #question4
 countries = []
+genders4 = []
 for laureate in laureates:
     if(not(laureate['born'] == '0000-00-00' and laureate['died'] == '0000-00-00') and (laureate['gender'] == 'male' or laureate['gender'] == 'female')):
         for prize in laureate['prizes']:
-            affiliations = prize['affiliations'][0]
+            affiliations = prize['affiliations']
+            for affiliation in affiliations:
+                if('country' in affiliation):
+                    genders4.append(laureate['gender'])
+                    countries.append(affiliation['country'])
+                    
+countries = list(np.where(np.asarray(countries) == 'Alsace (then Germany, now France)', 'Germany', countries))
+
+genders_affCountries = pd.DataFrame([countries, genders4]).swapaxes(0,1)
+genders_affCountries.columns = ['Country', 'Gender']
+print(genders_affCountries)
+pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender, margins=True)
 
 #%%-----
 # creates DataFrame storing gender and year of award for each recipient.
