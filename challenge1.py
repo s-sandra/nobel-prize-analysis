@@ -2,7 +2,6 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 
 # loads nobel prize data into nobel_data object
 with open("nobel.json","r") as data:
@@ -73,7 +72,6 @@ gender_and_year = pd.DataFrame(rows)
 gender_and_year = gender_and_year[["gender","year"]]
 
 gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")] # considers only male and female genders
-gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year,margins=True)
 gender_frequency = gender_and_year.gender.value_counts()
 gender_frequency.plot(kind="bar")
 plt.title("Gender of Nobel Prize Recipients")
@@ -82,8 +80,10 @@ plt.ylabel("Frequency")
 plt.show()
 plt.close()
 
-gender_year_graph = gender_and_year_frequency.plot(kind="bar")
-gender_year_graph.xaxis.set_major_locator(ticker.MultipleLocator(10))
+gender_and_year_frequency = pd.crosstab(gender_and_year.year, gender_and_year.gender)
+# gender_and_year_frequency = gender_and_year_frequency.cumsum()
+gender_year_graph = gender_and_year_frequency.loc[::10].plot(kind="bar")
+plt.show()
 plt.close()
 
 gender_and_category = pd.DataFrame(rows)
