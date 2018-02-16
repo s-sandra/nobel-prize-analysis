@@ -53,8 +53,11 @@ countries = list(np.where(np.asarray(countries) == 'Alsace (then Germany, now Fr
 
 genders_affCountries = pd.DataFrame([countries, genders4]).swapaxes(0,1)
 genders_affCountries.columns = ['Country', 'Gender']
+
+
 print(genders_affCountries)
-pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender, margins=True)
+print(pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender, margins=True))
+print(pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender).apply(lambda r: r/r.sum(), axis=1))
 
 #%%-----
 # creates DataFrame storing gender and year of award for each recipient.
