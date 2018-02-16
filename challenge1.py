@@ -97,13 +97,14 @@ plt.close()
 
 gender_and_year_frequency = pd.crosstab(gender_and_year.year, gender_and_year.gender)
 
-last_year = 10
-gender_and_year_frequency.iloc[0 : 10] = gender_and_year_frequency.iloc[0: 10].cumsum()
-for year in range(10,len(gender_and_year_frequency),10):
-    gender_and_year_frequency.iloc[last_year : year] = gender_and_year_frequency.iloc[last_year: year].cumsum()
-    last_year = year
+start_decade = 1901
+end_decade = 1909
+for year in range(0,len(gender_and_year_frequency),10):
+    gender_and_year_frequency.loc[str(start_decade) : str(end_decade)] = gender_and_year_frequency.loc[str(start_decade) : str(end_decade)].cumsum()
+    start_decade = end_decade + 1
+    end_decade = end_decade + 10
 
-gender_and_year_frequency = gender_and_year_frequency.loc[::10]
+gender_and_year_frequency = gender_and_year_frequency.loc[["1909","1919","1929","1939","1949","1959","1969","1979","1989","1999","2009","2017"]]
 gender_and_year_frequency.index = pd.Series(["1900s","1910s","1920s","1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s","2010s"])
 gender_year_graph = gender_and_year_frequency.plot(kind="bar")
 plt.title("Gender Distribution of Nobel Laureates by Decade")
