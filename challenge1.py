@@ -47,20 +47,30 @@ for laureate in laureates:
 #%%-----
 # creates DataFrame storing gender and year of award for each recipient.
 rows = []
+institutions = []
 for laureate in nobel_data["laureates"]:
     gender = laureate["gender"]
 
     # checks for bogus entries
     if laureate["born"] != "0000-00-00" and laureate["died"] != "0000-00-00":
 
-        # gets years of all prizes recipient has won
+        # gets years and category of all prizes recipient has won
         for prize in laureate["prizes"]:
             year = prize["year"]
             category = prize["category"]
             rows.append({"gender" : gender, "year" : year, "category" : category})
 
+            # gets affiliated institution of recipient
+            for affiliation in prize["affiliations"]:
+
+                # some recipients aren't affiliated with an institution
+                if affiliation:
+                    if "name" in affiliation:
+                        institution = affiliation["name"]
+                        institutions.append({"gender" : gender, "institution" : institution})
+
 gender_and_year = pd.DataFrame(rows)
-del gender_and_year["category"]
+gender_and_year = gender_and_year[["gender","year"]]
 
 gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")] # considers only male and female genders
 gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year)
@@ -77,10 +87,14 @@ gender_year_graph.xaxis.set_major_locator(ticker.MultipleLocator(10))
 plt.close()
 
 gender_and_category = pd.DataFrame(rows)
-del gender_and_category["year"]
+gender_and_category = gender_and_category[["gender","category"]]
+
 category_gender_frequency = pd.crosstab(gender_and_category.category, gender_and_category.gender)
 category_gender_frequency.plot(kind="bar")
 plt.title("Gender Frequency in Nobel Prize Categories")
 plt.xlabel("Category")
 plt.ylabel("Frequency")
 plt.show()
+
+gender_and_institution = pd.DataFrame(institutions)
+gender_and_institution.institution.value_counts() # the university with the most nobel prize winners is Univerity of California with 21 recipients.
