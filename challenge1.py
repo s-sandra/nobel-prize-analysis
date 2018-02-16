@@ -2,6 +2,7 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.stats.stats
 
 # loads nobel prize data into nobel_data object
 with open("nobel.json","r") as data:
@@ -91,7 +92,7 @@ plt.xlabel("Gender")
 plt.ylabel("Frequency")
 plt.show()
 plt.close()
-
+gender_chi = scipy.stats.chi2_contingency(gender_frequency)
 gender_and_year_frequency = pd.crosstab(gender_and_year.year, gender_and_year.gender)
 
 start_decade = 1901
@@ -109,6 +110,7 @@ plt.xlabel("Decade")
 plt.ylabel("Frequency")
 plt.show()
 plt.close()
+female_year_chi = scipy.stats.chi2_contingency(gender_and_year_frequency)
 
 gender_and_category = pd.DataFrame(rows)
 gender_and_category = gender_and_category[["gender","category"]]
