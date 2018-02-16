@@ -89,9 +89,11 @@ for year in range(10,len(gender_and_year_frequency),10):
     last_year = year
 
 gender_and_year_frequency = gender_and_year_frequency.loc[::10]
-gender_and_year_frequency.index = pd.Series(["1910s","1920s","1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s","2010s","2020s"])
-print(gender_and_year_frequency)
+gender_and_year_frequency.index = pd.Series(["1900s","1910s","1920s","1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s","2010s"])
 gender_year_graph = gender_and_year_frequency.plot(kind="bar")
+plt.title("Gender Distribution of Nobel Laureates by Decade")
+plt.xlabel("Decade")
+plt.ylabel("Frequency")
 plt.show()
 plt.close()
 
