@@ -81,8 +81,17 @@ plt.show()
 plt.close()
 
 gender_and_year_frequency = pd.crosstab(gender_and_year.year, gender_and_year.gender)
-# gender_and_year_frequency = gender_and_year_frequency.cumsum()
-gender_year_graph = gender_and_year_frequency.loc[::10].plot(kind="bar")
+
+last_year = 10
+gender_and_year_frequency.iloc[0 : 10] = gender_and_year_frequency.iloc[0: 10].cumsum()
+for year in range(10,len(gender_and_year_frequency),10):
+    gender_and_year_frequency.iloc[last_year : year] = gender_and_year_frequency.iloc[last_year: year].cumsum()
+    last_year = year
+
+gender_and_year_frequency = gender_and_year_frequency.loc[::10]
+gender_and_year_frequency.index = pd.Series(["1910s","1920s","1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s","2010s","2020s"])
+print(gender_and_year_frequency)
+gender_year_graph = gender_and_year_frequency.plot(kind="bar")
 plt.show()
 plt.close()
 
