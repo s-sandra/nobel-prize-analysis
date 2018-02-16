@@ -74,7 +74,6 @@ gender_and_year = gender_and_year[["gender","year"]]
 
 gender_and_year = gender_and_year[(gender_and_year.gender == "male") | (gender_and_year.gender == "female")] # considers only male and female genders
 gender_and_year_frequency = pd.crosstab(gender_and_year.gender, gender_and_year.year,margins=True)
-print(gender_and_year_frequency)
 gender_frequency = gender_and_year.gender.value_counts()
 gender_frequency.plot(kind="bar")
 plt.title("Gender of Nobel Prize Recipients")
@@ -98,4 +97,17 @@ plt.ylabel("Frequency")
 plt.show()
 
 gender_and_institution = pd.DataFrame(institutions)
-gender_and_institution.institution.value_counts() # the university with the most nobel prize winners is Univerity of California with 21 recipients.
+
+# gets top five institutions with the most nobel prize recipients
+top_institutions = gender_and_institution.institution.value_counts().head(5).to_frame().reset_index()
+top_institutions.columns = ["institution", "frequency"]
+institution_gender_counts = pd.merge(top_institutions,gender_and_institution, on="institution")
+del institution_gender_counts["frequency"]
+
+institution_gender_counts = pd.crosstab(institution_gender_counts.institution, institution_gender_counts.gender)
+institution_gender_counts.plot(kind="bar")
+plt.title("Gender of Nobel Prize Recipients in Top Universities")
+plt.xlabel("Universities with Most Laureates")
+plt.ylabel("Gender Frequency")
+plt.show()
+plt.close()
