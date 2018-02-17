@@ -113,12 +113,12 @@ plt.xlabel("Decade")
 plt.ylabel("Frequency")
 plt.show()
 plt.close()
-female_year_chi = scipy.stats.chi2_contingency(gender_and_year_frequency)
 
 gender_and_category = pd.DataFrame(rows)
 gender_and_category = gender_and_category[["gender","category"]]
 
 category_gender_frequency = pd.crosstab(gender_and_category.category, gender_and_category.gender)
+category_gender_frequency = category_gender_frequency.sort_values(by="male",ascending=False)
 category_gender_frequency.plot(kind="bar")
 plt.title("Gender Frequency in Nobel Prize Categories")
 plt.xlabel("Category")
@@ -134,6 +134,8 @@ institution_gender_counts = pd.merge(top_institutions,gender_and_institution, on
 del institution_gender_counts["frequency"]
 
 institution_gender_counts = pd.crosstab(institution_gender_counts.institution, institution_gender_counts.gender)
+institution_gender_counts = institution_gender_counts.sort_values(by="male", ascending=False)
+institution_gender_counts.index = pd.Series(["UC","Harvard","Caltech","MIT", "UChicago"])
 institution_gender_counts.plot(kind="bar")
 plt.title("Gender of Nobel Prize Recipients in Top Universities")
 plt.xlabel("Universities with Most Laureates")
