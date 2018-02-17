@@ -98,7 +98,10 @@ plt.xticks(rotation="horizontal")
 plt.close()
 gender_chi = scipy.stats.chi2_contingency(gender_frequency)
 
+
 gender_and_year_frequency = pd.crosstab(gender_and_year.year, gender_and_year.gender)
+gender_year_chi2 = scipy.stats.chi2_contingency(gender_and_year_frequency)
+
 start_decade = 1901
 end_decade = 1909
 # groups gender counts per year into decades.
