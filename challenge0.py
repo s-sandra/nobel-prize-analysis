@@ -53,11 +53,16 @@ countries = list(np.where(np.asarray(countries) == 'Alsace (then Germany, now Fr
 
 genders_affCountries = pd.DataFrame([countries, genders4]).swapaxes(0,1)
 genders_affCountries.columns = ['Country', 'Gender']
-
+#scipy.stats.chi2_contingency(genders_affCountries)
 
 print(genders_affCountries)
-print(pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender, margins=True))
-print(pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender).apply(lambda r: r/r.sum(), axis=1))
+genders_affCountries_crosstab = pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender, margins=True)
+genders_affCountries_crosstab = genders_affCountries_crosstab.sort_values(by="female",ascending=False)
+print(genders_affCountries_crosstab)
+
+genders_affCountries_crosstab = pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender)
+genders_affCountries_crosstab = genders_affCountries_crosstab.sort_values(by="female",ascending=False)
+print(genders_affCountries_crosstab.apply(lambda r: r/r.sum(), axis=1))
 
 #%%-----
 # creates DataFrame storing gender and year of award for each recipient.
