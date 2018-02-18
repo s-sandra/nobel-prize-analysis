@@ -63,6 +63,7 @@ print(genders_affCountries_crosstab)
 genders_affCountries_crosstab = pd.crosstab(genders_affCountries.Country, genders_affCountries.Gender)
 genders_affCountries_crosstab = genders_affCountries_crosstab.sort_values(by="female",ascending=False)
 print(genders_affCountries_crosstab.apply(lambda r: r/r.sum(), axis=1))
+genders_affCountries_chi2 = scipy.stats.chi2_contingency(genders_affCountries_crosstab)
 
 #%%-----
 # creates DataFrame storing gender and year of award for each recipient.
@@ -101,8 +102,6 @@ plt.ylabel("Frequency")
 plt.xticks(rotation="horizontal")
 # plt.show()
 plt.close()
-gender_chi = scipy.stats.chi2_contingency(gender_frequency)
-
 
 gender_and_year_frequency = pd.crosstab(gender_and_year.year, gender_and_year.gender)
 gender_year_chi2 = scipy.stats.chi2_contingency(gender_and_year_frequency)
